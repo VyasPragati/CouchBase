@@ -1,0 +1,196 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 Georgia;
+}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red26\green26\blue26;\red255\green255\blue255;
+\red16\green60\blue192;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 vulnerabilities of gateway, breach firewall, \
+\
+prevent attacker from reaching API Management server. think about security Every touch point \
+\
+Mobile API\
+-firewall to protect datas\
+-API could be attacked , attacker can steal,manipulate, identity theft, Dof service attacks\
+Authenticate incoming calls\
+Basic , token based and key/secret authentication\
+transaction are authorized by end customer-OAuth\
+-Data in Rest is protected\
+\
+
+\b Basic Authentication
+\b0 : Consumer send the credentials to the server in HTTP header in base 64 encrypted format. Format: User:Password. Server decoded the value in the header and checks the user and password. If HTTP is used then credentials are sent in plain text format visible to anyone so basic authentication should be done using HTTPS(Man in Middle attacks). Basic authentication may require crews to be passed overtime\
+\
+
+\b Token Based Authentication:
+\b0 \
+\
+JWT-Json web token\
+/token/\{credentials\}- validate creds, issue a token save in storage\
+token should be applied in all calls, receiving server should validate token everytime. Avoid hardcoding credentials \
+\
+token is encoded string, api need not store in session can be sent in req header, query or request body. Issuer can decide the validity, expiry etc\
+\
+JWT- 3 PARTS header.payload.signature\
+header base 64 encoding consist of type and hashing, payload 64, signature hash of payload and header with secret\
+\
+
+\b API Keys and secret (public data can be fetched not based on specific user)\
+\
+
+\b0 if want to use API from google or walmart  -need to register, after successful registration will provide key and secret- meant for m/c(user and password meant for humans). Long random string
+\b \
+\
+
+\b0 key-identifies API consumer(Client key/id)
+\b \
+
+\b0 \
+API secret- used by client to prove its identity(password in basic authentication or signature can use this secret)\
+\
+instead of credentials can send key+digital signatures, Server has the secret stored for every key so it will be able to crack and validate the signature.\
+\
+key can be used for authentication, create token, 
+\b rate limiting
+\b0  if too many calls are made then send an error:429, analytics not to implement in api code->leverage api management platform\
+without writing code in APIs\
+\
+
+\b OAuth 2
+\b0 \
+\
+Gmail data of customer to be used by another app, another app does not get a grant since data belong to customer. other app get authorization from customer then access data from gmail providing the proof of authorization\
+\
+based on tokens, 3 component- user, provider with authorization and user/resource api server, application/client\
+\
+
+\b application
+\b0  sends 
+\b authorization request
+\b0  to 
+\b user
+\b0  and gets an 
+\b authorization grant
+\b0 . \
+\
+
+\b application 
+\b0 sends
+\b  authorization grant
+\b0  to 
+\b resource/api server 
+\b0 and gets
+\b  access token \
+\
+application 
+\b0 can then use the 
+\b token
+\b0  to request 
+\b resource/user
+\b0  info from  
+\b resource/api server\
+\
+\
+
+\b0 access token has an expiry set by issuer, can use refresh token as well\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f1\fs30 \cf2 \expnd0\expndtw0\kerning0
+Refresh token may be used for generating a new access token\
+\
+
+\b Functional Attacks\
+(sqlfiddle.com- schema)\
+SQL injection
+\b0 : form based api. attacker can insert sql code in from data.\
+
+\b Fuzzing attack: 
+\b0 attacker sends random input and gets some error they analyze the response to check vulnerabilities. make sure API doesn\'92t return sql exceptions as is\
+
+\b Cross site Forgery: 
+\b0 attacker sends link to user clicking runs scripts\
+(owasp)- use POST instead of GET, ADD Custom headers\
+\
+
+\b Token and session hijacking:\
+
+\b0 hack user token through scripts. Way to protect is ensure token expiry.\
+complex token pattern , don\'92t just rely on token use additional security header.\
+\
+
+\f0\fs24 \cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Consider using API Gateway or API management solution\
+\
+
+\b REST:
+\b0 \
+\
+\pard\pardeftab720\sl300\sa256\partightenfactor0
+
+\f2\fs26 \cf3 \cb4 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Data is used by apis , apis are leveraged by app developer. Most imp link is app developer(user). API is a product. Think about API developer. Public API, Private APIS\
+\cb1 \uc0\u8232 \cb4 \
+Design principles:\
+\cb1 \uc0\u8232 \cb4 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl300\partightenfactor0
+\ls1\ilvl0\cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Unambiguos- intent is clear\cb1 \
+\ls1\ilvl0\cb4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Simple design\cb1 \
+\ls1\ilvl0\cb4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Clear\cb1 \
+\ls1\ilvl0\cb4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Stay Consistent with definition/pattern/structure etc.\cb1 \
+\pard\pardeftab720\sl300\sa256\partightenfactor0
+\cf3 \cb4 Naming Endpoints\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl300\partightenfactor0
+\ls2\ilvl0\cf3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Base Url-{\field{\*\fldinst{HYPERLINK "https://www.samsclub.com/"}}{\fldrslt \cf5 \ul \ulc5 \strokec5 https://www.samsclub.com}}- avoid using www, keep simple,{\field{\*\fldinst{HYPERLINK "http://api.sams.com/"}}{\fldrslt \cf5 \ul \ulc5 \strokec5 api.sams.com}}, separate subdomain/domain\cb1 \
+\ls2\ilvl0\cb4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Version-/v1\cb1 \
+\ls2\ilvl0\cb4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Resource-/items, /items/\{item id\}, /people/\{id\},/programmes/\{id\}, nowns,plural, no verbs,\'a0\cb1 \
+\pard\pardeftab720\sl300\sa256\partightenfactor0
+\cf3 \cb4 Actions(No crud operation)- calculation of tax, generate report\
+Price estimation api, friendship lookup, search on items\
+1.friendships/lookup\
+2./ Search?query\
+3. Estimates/price\
+Book a vacation package\
+Find vacation using id then book\
+/vacations/\{id\}/book or /bookVacation\
+Search by destination and nights:\
+\cb1 \uc0\u8232 \cb4 \
+/vacations/search?destination=bahama&nights=4 and provide destin and night query params instead of adding/vacations/destination/\{id\}/night\
+\cb1 \uc0\u8232 \cb4 \
+Managing resource within a resource\
+Item reviews-/items/\{id\}/reviews\
+facebook:/me/photos\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 CRUD 
+\b0 \
+\
+Create-POST \
+/vacations, /vacations/\{id\}/reviews\
+\
+update - PUT : To update all attributes/replace/create a new resource(not a good approach)\
+	    PATCH: Update part of resource\
+/vacations/121/validTillDate=3/1/2017\
+\
+status code \
+1-informational\
+2-success\
+3-redirectinal\
+4-client error\
+5-Server error\
+\
+\
+\
+}
